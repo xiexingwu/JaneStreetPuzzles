@@ -12,12 +12,10 @@ class NumberPlacementSolver(cp_model.CpSolverSolutionCallback):
     def __init__(self, 
                 vals_list: tuple[tuple[int, int], int], 
                 grid: np.ndarray,
-                hook: np.ndarray):
+                hook: np.ndarray,
+                find_all_solutions: bool):
         cp_model.CpSolverSolutionCallback.__init__(self)
-        # self.N = N
-        # self.vals_list = vals_list
-        # self.grid = grid
-        # self.hook = hook
+        self.find_all_solutions = find_all_solutions
         self.solutions = []
         status = self.solveNumberPlacement(vals_list, grid, hook)
 
@@ -111,6 +109,6 @@ class NumberPlacementSolver(cp_model.CpSolverSolutionCallback):
 
         # SOLVE
         solver = cp_model.CpSolver()
-        solver.parameters.enumerate_all_solutions = True
+        solver.parameters.enumerate_all_solutions = self.find_all_solutions
         status = solver.Solve(model, self)
         return status

@@ -98,7 +98,7 @@ def findSolution(grid, vals_list, find_all_solutions = False):
 
     for i, new_hook in enumerate(allValidHooks(hook, N)):
         tstart = time.time()
-        NPSolver = NumberPlacementSolver(vals_list, grid, new_hook)
+        NPSolver = NumberPlacementSolver(vals_list, grid, new_hook, find_all_solutions)
 
         for vals, _, _ in NPSolver.solutions:
             if checkConnected(vals):
