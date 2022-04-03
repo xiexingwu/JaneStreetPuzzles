@@ -16,3 +16,13 @@ Python 3.9.9
 - numpy 1.22.2
 - scipy 1.8.0
 - matplotlib 3.5.1 (to visualise grid)
+
+## Knights 4
+Solved with constraint programming.
+
+Solved on *03/04/2022*.
+
+Python 3.9.9
+- ortools 9.3.10497
+- numpy 1.22.2
+- matplotlib 3.5.1 (to visualise grid)
