@@ -87,41 +87,21 @@ def validHooks(hook, n):
                 yield hook+new
                 new[right] = new[down] = 0
 
-def checkConnected(vals):
-    _, ncomps = label(vals)
-    return ncomps==1
 
-def findSolution(grid, vals_list, find_all_solutions = False):
-    N, _ = grid.shape
-    hook = np.zeros((N,N), dtype=int)
-    solutions = []
 
-    for i, new_hook in enumerate(allValidHooks(hook, N)):
-        tstart = time.time()
-        NPSolver = NumberPlacementSolver(vals_list, grid, new_hook, find_all_solutions)
-
-        for vals, _, _ in NPSolver.solutions:
-            if checkConnected(vals):
-                solutions.append((new_hook, vals))
-                if not find_all_solutions:
-                    return solutions
-
-        logging.debug(f'Testing hook {i}: {(time.time() - tstart)*1000:.2f}ms elapsed, found {len(solutions)} solutions')
-
-    return solutions
 
 def main(grid, vals_list):
     tstart = time.time()
-    solutions = findSolution(grid, vals_list)
+    solution = NPSolver = NumberPlacementSolver(vals_list, grid, find_all_solutions=False)
     print(f'Total time: {(time.time() - tstart)*1000: .2f}ms')
 
-    if not solutions:
+    if not solution:
         print('NO SOLUTION FOUND')
         return
 
-    if len(solutions) > 1:
-        print(f'====={len(solutions)} valid solutions found. Only showing first one.======')
-    hook, vals = solutions.pop()
+    if len(solution) > 1:
+        print(f'====={len(solution)} valid solutions found. Only showing first one.======')
+    hook, vals = solution[0][:2]
     print('-----Solution-----')
     print('---hook---')
     print(hook)
@@ -131,8 +111,9 @@ def main(grid, vals_list):
     print(f'Areas of {sizes}')
     print(f'Product: {area}')
 
+    return solution[0]
 
 if __name__ == '__main__':
-    main(np.array(grid, dtype=int), vals_list)
-    # from tests import ex_grid, ex_vals_list, ex_hook, ex_vals
-    # main(ex_grid, ex_vals_list)
+    solution = main(np.array(grid, dtype=int), vals_list)
+    # from tests import ex_grid, ex_vals_list
+    # H, V, X, DX, RX, DH, RH, M = main(ex_grid, ex_vals_list)
